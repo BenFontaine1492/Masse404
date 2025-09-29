@@ -1,40 +1,41 @@
-.PHONY: build-prod run-prod stop-prod logs-prod restart-prod startup-prod dev dev-logs dev-stop
+.PHONY: build-prod run-prod stop-prod logs-prod restart-prod startup-prod \
+        run-dev logs-dev stop-dev
 
 ### --- Production Commands (Nginx) ---
 
-# Build the production image
+# Build the production images
 build-prod:
-	docker compose build
+	docker compose build frontend backend db
 
-# Run production container in detached mode
+# Run production containers in detached mode
 run-prod:
-	docker compose up -d frontend
+	docker compose up -d frontend backend db
 
 # Stop and remove production containers
 stop-prod:
 	docker compose down
 
-# View logs of the production container
+# View logs of production containers
 logs-prod:
-	docker compose logs -f frontend
+	docker compose logs -f frontend backend db
 
-# Restart the production container
+# Restart production containers
 restart-prod: stop-prod run-prod
 
-# Build and run in one step
+# Build and run production in one step
 startup-prod: build-prod run-prod
 
 
 ### --- Development Commands (Hot Reload with Vite) ---
 
-# Run development container (hot reload)
+# Run dev containers (hot reload + backend + db)
 run-dev:
-	docker compose up frontend-dev
+	docker compose up frontend-dev backend db
 
-# View logs of the dev container
+# View logs of dev containers
 logs-dev:
-	docker compose logs -f frontend-dev
+	docker compose logs -f frontend-dev backend db
 
-# Stop only the dev container
+# Stop only the dev containers
 stop-dev:
-	docker compose stop frontend-dev
+	docker compose stop frontend-dev backend db
